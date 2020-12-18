@@ -4,28 +4,34 @@ using System.Threading.Tasks;
 using MediatR;
 using Persistence;
 
-namespace Appliation.Activities {
-    public class Edit {
-        public class Command: IRequest 
+namespace Appliation.Activities
+{
+    public class Edit
+    {
+        public class Command : IRequest
         {
-            public Guid Id { get; set; }      
+            public Guid Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
-            public string Category { get; set; } 
+            public string Category { get; set; }
             public DateTime? Date { get; set; }
             public string City { get; set; }
-            public string Venue { get; set; }  
+            public string Venue { get; set; }
         }
 
-        public class Handler: IRequestHandler < Command > 
+        public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context) {
+            public Handler(DataContext context)
+            {
                 _context = context;
             }
 
+
+
             // Unit is an empty object which we are going to be returning from this command
-            public async Task < Unit > Handle(Command request, CancellationToken cancellationToken) 
+
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
 
                 var activity = await _context.Activities.FindAsync(request.Id);
@@ -43,11 +49,11 @@ namespace Appliation.Activities {
                 activity.City = request.City ?? activity.City;
                 activity.Venue = request.Venue ?? activity.Venue;
 
-               
+
                 // if the saveasync returns greater than zero then it will consider successful (var success)
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (success) 
+                if (success)
                 {
                     return Unit.Value;
                 }

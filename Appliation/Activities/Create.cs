@@ -31,7 +31,7 @@ namespace Appliation.Activities
             // Unit is an empty object which we are going to be returning from this command
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = new Activity 
+                var activity = new Activity
                 {
                     Id = request.Id,
                     Title = request.Title,
@@ -47,10 +47,8 @@ namespace Appliation.Activities
                 // if the saveasync returns greater than zero then it will consider successful (var success)
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (success)
-                {
-                    return Unit.Value;
-                }
+                if (success) return Unit.Value;
+
                 throw new Exception("Problem saving changes");
             }
         }
